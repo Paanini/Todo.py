@@ -7,19 +7,22 @@ import sys,re
 def main():
 	#~ Declare the important variables
 	action=sys.argv[1]
-	hashtag=[]
+	hashtags=[]
 	#~ Read the contents of the current file and store it in the dict
 	task_dict=read()
 	
 	for a in task_dict.values():
-		if a[1] != ' ': hashtag.append(a[1])
+		if a[1] != ' ': hashtags.append(a[1])
 
+	#~ Avoid dupicate entried by converting the list to a set and then back to a list
+	hashtag=list(set(hashtags))
+	
 	if len(sys.argv) == 2 and action=='add':
 		text=raw_input("Please enter the task to be added : ")+'\n'
 	elif len(sys.argv) == 2 and action=='done':
 		text=raw_input("Please enter the s.no. of the completed task : ")+'\n'
 	elif len(sys.argv) == 2 and action=='list':
-		print 'Please enter one of the following hashtags : '+'\n'
+		print 'Please enter one of the following: '
 		for h in hashtag:
 			print '- '+h
 		text=raw_input('- '+'All (default) : \n Enter your choice: ')
@@ -85,7 +88,7 @@ def write (task_dict):
 	#~ for a,b in sorted(task_dict.iteritems()):
 		#~ f.write(str(a)+'. '+b)
 	f.close()
-	display()
+	display('all')
 
 	
 def display(text):
@@ -99,7 +102,7 @@ def display(text):
 		else:
 			if text in t:
 				print t,
-		
+	print '\n'	
 
 if __name__=='__main__':
 	main()
