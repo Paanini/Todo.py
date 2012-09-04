@@ -1,7 +1,10 @@
 #TODO:  Add / Remove multiple items in the same command
 #       Change location of the todo.txt file
-#       Add support for multiple lists using #hashtags
 #		Archive all done tasks into a separate done.txt file
+#~ 
+#~ USAGE: python todo.py <action> <text>
+#~ <action> can be either 'add' , 'done' or 'list'
+#~ <text> need not be provided as an argument. If it is skipped, the program will prompt the user for the appropriate input
 
 import sys,re
 def main():
