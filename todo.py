@@ -7,16 +7,26 @@ import sys,re
 def main():
 	#~ Declare the important variables
 	action=sys.argv[1]
+	hashtag=[]
+	#~ Read the contents of the current file and store it in the dict
+	task_dict=read()
+	
+	for a in task_dict.values():
+		if a[1] != ' ': hashtag.append(a[1])
+
 	if len(sys.argv) == 2 and action=='add':
 		text=raw_input("Please enter the task to be added : ")+'\n'
 	elif len(sys.argv) == 2 and action=='done':
 		text=raw_input("Please enter the s.no. of the completed task : ")+'\n'
+	elif len(sys.argv) == 2 and action=='list':
+		print 'Please enter one of the following hashtags : '+'\n'
+		for h in hashtag:
+			print '- '+h
+		text=raw_input('- '+'All (default) : \n Enter your choice: ')
+				
 	if len(sys.argv) > 2:
 		text=sys.argv[2]+'\n'
 		
-	#~ Read the contents of the current file and store it in the dict
-	task_dict=read()
-
 	if action=='add':
 		#~ print task_dict, task_dict.items(), len(task_dict.items())
 		for i in xrange(1,len(task_dict.items())+2):
@@ -36,7 +46,9 @@ def main():
 			write(task_dict)
 			print "\nTask number "+text[0]+' has been successfully removed\n'
 	elif action=='list':
-			display()
+		if text == '' or text == 'All' : display('all')
+		else:
+			display(text)
 	else:
 			print "\""+action+"\""+ " is not a recognized command. Please use one of these options:\n- add\n- done\n- list\n"
 
@@ -76,14 +88,18 @@ def write (task_dict):
 	display()
 
 	
-def display():
+def display(text):
 	print '\n'+20*'*'+'\nTO-DO LIST\n'+20*'*'
 	f=open("todo.txt")
 	tasks=f.readlines()
 	f.close()
 	for t in tasks:
-		print t,
-
+		if text=='all':
+			print t,
+		else:
+			if text in t:
+				print t,
+		
 
 if __name__=='__main__':
 	main()
