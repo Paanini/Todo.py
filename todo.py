@@ -1,6 +1,7 @@
 #TODO:  Add / Remove multiple items in the same command
 #       Change location of the todo.txt file
 #       Add support for multiple lists using #hashtags
+#		Archive all done tasks into a separate done.txt file
 
 import sys,re
 def main():
@@ -17,13 +18,19 @@ def main():
 	task_dict=read()
 
 	if action=='add':
-		for i in xrange(1,len(task_dict)+2):
+		#~ print task_dict, task_dict.items, len(task_dict.items())
+		for i in xrange(1,len(task_dict.items())+2):
 			if not task_dict.has_key(str(i)):
-				task_dict[str(i)]=text
-				break
+				try:
+					m=re.search(r'(.+) #(.+)',text)
+					task_dict[str(i)]=[m.group(1),m.group(2)]
+				except AttributeError:
+					m=re.search(r'(.+)',text)
+					task_dict[str(i)]=[m.group(1),' ']
+					break
 		write(task_dict)
 		print "\nNew task has been added\n"
-		print task_dict
+		#~ print task_dict
 	elif action=='done':
 			task_dict.pop(str(text)[0])
 			write(task_dict)
@@ -40,11 +47,14 @@ def read():
 		todo.close()
 		#~ print "I have entered try"
 		task_dict={}
-		lol=[]
 		for t in tasks:
-			task_dict[t[0]]=t[3:]
-			print "Inside read - ",task_dict
-		return task_dict
+			try:
+				m=re.search(r'(\d+)\. (.+) #(.+)',t)
+				task_dict[m.group(1)]=[m.group(2),m.group(3)]
+			except AttributeError:
+				m=re.search(r'(\d+)\. (.+)',t)
+				task_dict[m.group(1)]=[m.group(2),' ']
+		print task_dict	
 	except IOError:
 		todo=open("todo.txt","w")
 		print "File does not exist. New file has been created"
@@ -54,9 +64,14 @@ def read():
 def write (task_dict):
 	f=open("todo.txt","w")
 	for a,b in sorted(task_dict.iteritems()):
-		f.write(str(a)+'. '+b)
+		if b[1]!='':
+			f.write(a+'. '+b[0]+' #'+b[1]+'\n')
+		else:
+			f.write(a+'. '+b[0]+'\n')
+	#~ for a,b in sorted(task_dict.iteritems()):
+		#~ f.write(str(a)+'. '+b)
 	f.close()
-	display()
+	print task_dict
 	
 def display():
 	print '\n'+20*'*'+'\nTO-DO LIST\n'+20*'*'
