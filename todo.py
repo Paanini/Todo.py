@@ -18,7 +18,7 @@ def main():
 	task_dict=read()
 
 	if action=='add':
-		#~ print task_dict, task_dict.items, len(task_dict.items())
+		#~ print task_dict, task_dict.items(), len(task_dict.items())
 		for i in xrange(1,len(task_dict.items())+2):
 			if not task_dict.has_key(str(i)):
 				try:
@@ -54,7 +54,7 @@ def read():
 			except AttributeError:
 				m=re.search(r'(\d+)\. (.+)',t)
 				task_dict[m.group(1)]=[m.group(2),' ']
-		print task_dict	
+		return task_dict	
 	except IOError:
 		todo=open("todo.txt","w")
 		print "File does not exist. New file has been created"
@@ -64,14 +64,14 @@ def read():
 def write (task_dict):
 	f=open("todo.txt","w")
 	for a,b in sorted(task_dict.iteritems()):
-		if b[1]!='':
+		if b[1]!=' ':
 			f.write(a+'. '+b[0]+' #'+b[1]+'\n')
 		else:
 			f.write(a+'. '+b[0]+'\n')
 	#~ for a,b in sorted(task_dict.iteritems()):
 		#~ f.write(str(a)+'. '+b)
 	f.close()
-	print task_dict
+	display()
 	
 def display():
 	print '\n'+20*'*'+'\nTO-DO LIST\n'+20*'*'
