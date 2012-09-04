@@ -9,7 +9,12 @@
 import sys,re
 def main():
 	#~ Declare the important variables
-	action=sys.argv[1]
+	try:
+		action=sys.argv[1]
+	except IndexError:
+		action=raw_input("Pleae enter an option - \n- add\n- done\n- list\n Enter your option: ")
+	
+	print action
 	hashtags=[]
 	#~ Read the contents of the current file and store it in the dict
 	task_dict=read()
@@ -32,7 +37,9 @@ def main():
 				
 	if len(sys.argv) > 2:
 		text=sys.argv[2]+'\n'
-		
+	else:
+		if action=='list': text='All'
+			
 	if action=='add':
 		#~ print task_dict, task_dict.items(), len(task_dict.items())
 		for i in xrange(1,len(task_dict.items())+2):
