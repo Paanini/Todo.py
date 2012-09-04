@@ -37,8 +37,8 @@ def main():
 				
 	if len(sys.argv) > 2:
 		text=sys.argv[2]+'\n'
-	else:
-		if action=='list': text='All'
+	#~ else:
+		#~ if action=='list': text='All'
 			
 	if action=='add':
 		#~ print task_dict, task_dict.items(), len(task_dict.items())
