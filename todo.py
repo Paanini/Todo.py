@@ -40,6 +40,7 @@ def main():
 	else:
 			print "\""+action+"\""+ " is not a recognized command. Please use one of these options:\n- add\n- done\n- list\n"
 
+
 def read():
 	try:
 		todo=open("todo.txt")
@@ -61,6 +62,7 @@ def read():
 		todo.close()
 		return {}
 
+
 def write (task_dict):
 	f=open("todo.txt","w")
 	for a,b in sorted(task_dict.iteritems()):
@@ -72,6 +74,7 @@ def write (task_dict):
 		#~ f.write(str(a)+'. '+b)
 	f.close()
 	display()
+
 	
 def display():
 	print '\n'+20*'*'+'\nTO-DO LIST\n'+20*'*'
@@ -80,17 +83,7 @@ def display():
 	f.close()
 	for t in tasks:
 		print t,
-	
-def check(st):
-	lol=[]
-	try:
-		m=re.search(r'(.+) #(.+)',st)
-		lol.append(m.group(1))
-		lol.append(m.group(2))
-	except AttributeError:
-		lol.append(st)
-	return lol
+
 
 if __name__=='__main__':
 	main()
-
