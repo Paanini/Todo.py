@@ -1,7 +1,11 @@
 #TODO:  Add / Remove multiple items in the same command
 #       Change location of the todo.txt file
-#		Archive all done tasks into a separate done.txt file
-#~ 
+#
+#DONE:
+#        Support for lists using #hashtags
+#        View the tasks for a specific list, or view all tasks
+#        Save all done tasks into a separate done.txt file
+
 #~ USAGE: python todo.py <action> <text>
 #~ <action> can be either 'add' , 'done' or 'list'
 #~ <text> need not be provided as an argument. If it is skipped, the program will prompt the user for the appropriate input
@@ -14,7 +18,6 @@ def main():
 	except IndexError:
 		action=raw_input("Pleae enter an option - \n- add\n- done\n- list\n Enter your option: ")
 	
-	print action
 	hashtags=[]
 	#~ Read the contents of the current file and store it in the dict
 	task_dict=read()
@@ -45,18 +48,26 @@ def main():
 		for i in xrange(1,len(task_dict.items())+2):
 			if not task_dict.has_key(str(i)):
 				try:
-					m=re.search(r'(.+) #(.+)',text)
+					m=re.search(r'(.+) #(.+$)',text)
 					task_dict[str(i)]=[m.group(1),m.group(2)]
 				except AttributeError:
-					m=re.search(r'(.+)',text)
+					m=re.search(r'(.+$)',text)
 					task_dict[str(i)]=[m.group(1),' ']
 					break
 		write(task_dict)
 		print "\nNew task has been added\n"
 		#~ print task_dict
 	elif action=='done':
-			task_dict.pop(str(text)[0])
-			write(task_dict)
+                        try:
+                                done=open("done.txt","a")
+                        except IOError:
+                                done=open("done.txt",'w')
+
+                        done_task=task_dict.pop(str(text)[0])
+                        done.write(str(text)[0]+'. '+done_task[0])
+                        done.close()
+                        write(task_dict)
+
 			print "\nTask number "+text[0]+' has been successfully removed\n'
 	elif action=='list':
 		if text == '' or text == 'All' : display('all')
