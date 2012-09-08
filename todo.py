@@ -9,7 +9,7 @@ def main():
 	#Connect to an SQLite DB and create the cursor
 	conn=sqlite3.connect("todo.db")
 	c=conn.cursor()
-	c.execute("CREATE TABLE IF NOT EXISTS tasks (s_no integer unique, task text, tag text, pri text check(pri in ('High','Low','Medium','None')));")
+	c.execute("CREATE TABLE IF NOT EXISTS tasks (s_no integer unique, task text, tag text, pri text check(pri in ('High','Low','Medium','None')) default 'None');")
 	index=c.execute("select count(*) from tasks").fetchall()[0][0]+1
 
 	if len(sys.argv) > 2:
@@ -24,9 +24,11 @@ def main():
 	#~ print record
 	if action=='add':
 		yoyo=add(c,record)
-		print yoyo,"\n One task added"
+		
 	elif action=='done':
-		done(c,record)
+		yoyo=done(c,record)
+	
+	print yoyo,"\n One task added"
 	conn.commit()
 
 def add(c,record):
@@ -36,9 +38,11 @@ def add(c,record):
 	a=c.execute("select * from tasks")
 	return a.fetchall()
 	
-def remove(c,record):
-	c.execute("DELETE FROM tasks WHERE s_no=?",record[0][1])
-		
+def done(c,record):
+	print record[0][1]
+	c.executemany("DELETE FROM tasks WHERE s_no=?",record[0][1])
+	a=c.execute("select s_no from tasks")
+	return a.fetchall()
 
 if __name__=='__main__':
 	main()
