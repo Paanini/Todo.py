@@ -17,17 +17,17 @@ def main():
 		action=sys.argv[1]
 	except IndexError:
 		action=raw_input("Pleae enter an option - \n- add\n- done\n- list\n Enter your option: ")
-	
+
 	hashtags=[]
 	#~ Read the contents of the current file and store it in the dict
 	task_dict=read()
-	
+
 	for a in task_dict.values():
 		if a[1] != ' ': hashtags.append(a[1])
 
 	#~ Avoid dupicate entried by converting the list to a set and then back to a list
 	hashtag=list(set(hashtags))
-	
+
 	if len(sys.argv) == 2 and action=='add':
 		text=raw_input("Please enter the task to be added : ")+'\n'
 	elif len(sys.argv) == 2 and action=='done':
@@ -37,12 +37,12 @@ def main():
 		for h in hashtag:
 			print '- '+h
 		text=raw_input('- '+'All (default) : \n Enter your choice: ')
-				
+
 	if len(sys.argv) > 2:
 		text=sys.argv[2]+'\n'
 	#~ else:
 		#~ if action=='list': text='All'
-			
+
 	if action=='add':
 		#~ print task_dict, task_dict.items(), len(task_dict.items())
 		for i in xrange(1,len(task_dict.items())+2):
@@ -91,7 +91,7 @@ def read():
 			except AttributeError:
 				m=re.search(r'(\d+)\. (.+)',t)
 				task_dict[m.group(1)]=[m.group(2),' ']
-		return task_dict	
+		return task_dict
 	except IOError:
 		todo=open("todo.txt","w")
 		print "File does not exist. New file has been created"
@@ -111,7 +111,7 @@ def write (task_dict):
 	f.close()
 	display('all')
 
-	
+
 def display(text):
 	print '\n'+20*'*'+'\nTO-DO LIST\n'+20*'*'
 	f=open("todo.txt")
@@ -123,7 +123,7 @@ def display(text):
 		else:
 			if text in t:
 				print t,
-	print '\n'	
+	print '\n'
 
 if __name__=='__main__':
 	main()
